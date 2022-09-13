@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
+import useSWR from "swr";
 import Head from "next/head";
+
+import { imageChecker, transformToCelcius } from "../helpers";
 import styles from "../styles/Home.module.css";
 import { Grid, Typography, Drawer } from "@mui/material";
 
@@ -17,8 +20,25 @@ import HumidityCard from "../components/HumidityCard";
 import VisibilityCard from "../components/VisibilityCard";
 import AirPressureCard from "../components/AirPressureCard";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const lat = -31.42;
+const lon = -64.18;
+const baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+const url =
+  baseUrl +
+  `lat=${lat}` +
+  "&" +
+  `lon=${lon}` +
+  "&" +
+  `appid=0ad247dac36d0f01e5015097858df85e`;
+
 const Home: NextPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { data, error } = useSWR(url, fetcher);
+  console.log(data);
+
+  if (!data) return <div>loading...</div>;
 
   return (
     <div className={styles.container}>
@@ -31,11 +51,17 @@ const Home: NextPage = () => {
         <Grid item xs={4} sx={{ background: "#1E213A" }}>
           <SearchButton />
           <LocationIcon />
-          <WeatherImage src="/Shower.png" width={202} height={234} />
-          <Temperature />
-          <Weathertext />
+          <WeatherImage
+            src={data && imageChecker(data.list[0].weather[0].main)}
+            width={234}
+            height={234}
+          />
+          <Temperature
+            temperature={transformToCelcius(data.list[0].main.temp)}
+          />
+          <Weathertext weather={data.list[0].weather[0].main} />
           <TodayText />
-          <IconWithText />
+          <IconWithText city={data.city.name} />
         </Grid>
         <Drawer open={isDrawerOpen}>dddd</Drawer>
         <Grid item xs={8} paddingLeft={4}>

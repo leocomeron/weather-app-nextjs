@@ -1,11 +1,15 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Typography, Grid } from "@mui/material";
 
-const IconWithText = () => {
+export interface IconWithTextProps {
+  city: string;
+}
+
+const IconWithText = (props: IconWithTextProps) => {
   return (
-    <Grid container>
+    <Grid container display="flex" justifyContent="center">
       <LocationOnIcon />
-      <Typography>Helinski</Typography>
+      <Typography>{props.city}</Typography>
     </Grid>
   );
 };
