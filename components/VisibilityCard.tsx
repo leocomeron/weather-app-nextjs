@@ -1,7 +1,7 @@
 import { Typography, styled, Grid } from "@mui/material";
 import VariableCard from "./VariableCard";
 
-export interface visibilityCardPropsType {
+export interface VisibilityCardPropsType {
   value: number;
 }
 
@@ -16,15 +16,17 @@ const StyledVisibilityUnitTypography = styled(Typography)({
   lineHeight: "100px",
 });
 
-const AirPressureCard = (props: visibilityCardPropsType) => {
+const VisibilityCard = (props: VisibilityCardPropsType) => {
   return (
-    <VariableCard title="Air pressure">
+    <VariableCard title="Visibility">
       <Grid item display="flex" justifyContent="center">
-        <StyledVisibilityDataTypography>{props.value}</StyledVisibilityDataTypography>
-        <StyledVisibilityUnitTypography>mb</StyledVisibilityUnitTypography>
+        <StyledVisibilityDataTypography>
+          {props.value.toString().replace(".", ",")}
+        </StyledVisibilityDataTypography>
+        <StyledVisibilityUnitTypography>miles</StyledVisibilityUnitTypography>
       </Grid>
     </VariableCard>
   );
 };
 
-export default AirPressureCard;
+export default VisibilityCard;

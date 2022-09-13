@@ -24,9 +24,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const lat = -31.42;
 const lon = -64.18;
-const baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+const currentUrl = "https://api.openweathermap.org/data/2.5/weather?";
+const forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const url =
-  baseUrl +
+  currentUrl +
   `lat=${lat}` +
   "&" +
   `lon=${lon}` +
@@ -52,16 +53,14 @@ const Home: NextPage = () => {
           <SearchButton />
           <LocationIcon />
           <WeatherImage
-            src={data && imageChecker(data.list[0].weather[0].main)}
+            src={data && imageChecker(data.weather[0].main)}
             width={234}
             height={234}
           />
-          <Temperature
-            temperature={transformToCelcius(data.list[0].main.temp)}
-          />
-          <Weathertext weather={data.list[0].weather[0].main} />
+          <Temperature temperature={transformToCelcius(data.main.temp)} />
+          <Weathertext weather={data.weather[0].main} />
           <TodayText />
-          <IconWithText city={data.city.name} />
+          <IconWithText city={data.name} />
         </Grid>
         <Drawer open={isDrawerOpen}>dddd</Drawer>
         <Grid item xs={8} paddingLeft={4}>
@@ -78,16 +77,16 @@ const Home: NextPage = () => {
           </Typography>
           <Grid container spacing={2}>
             <Grid item md={6} xs={12}>
-              <WindCard value={7} />
+              <WindCard value={Math.round(data.wind.speed)} />
             </Grid>
             <Grid item md={6} xs={12}>
-              <HumidityCard value={84} />
+              <HumidityCard value={data.main.humidity} />
             </Grid>
             <Grid item md={6} xs={12}>
-              <VisibilityCard value={6.4} />
+              <VisibilityCard value={data.visibility * 0.00062} />
             </Grid>
             <Grid item md={6} xs={12}>
-              <AirPressureCard value={998} />
+              <AirPressureCard value={data.main.pressure} />
             </Grid>
           </Grid>
         </Grid>
