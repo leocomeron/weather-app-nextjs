@@ -1,9 +1,11 @@
 import { Typography, styled, Grid } from "@mui/material";
 import VariableCard from "./VariableCard";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { degToCompass } from "../helpers";
 
 export interface windCardPropsType {
   value: number;
+  windDirection: number;
 }
 
 const StyledWindDataTypography = styled(Typography)({
@@ -25,10 +27,17 @@ const WindCard = (props: windCardPropsType) => {
       </Grid>
       <Grid item display="flex" justifyContent="center">
         <Grid alignItems="center" display="flex">
-          <NavigationIcon fontSize="inherit" sx={{ color: "#E7E7EB", marginRight: 1 }} />
+          <NavigationIcon
+            fontSize="inherit"
+            sx={{
+              color: "#E7E7EB",
+              marginRight: 1,
+              rotate: `${props.windDirection - 180}deg`,
+            }}
+          />
         </Grid>
         <Typography fontSize={14} alignItems="center" display="flex">
-          N
+          {degToCompass(props.windDirection)}
         </Typography>
       </Grid>
     </VariableCard>

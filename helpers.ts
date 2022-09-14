@@ -11,7 +11,7 @@ export const imageChecker = (weather: string) => {
     // case "few clouds":
     //   return "/LightCloud.png";
     case "Clouds":
-      return "/HeavyCloud.png";
+      return "/LightCloud.png";
     // case "Shower":
     //   return "/Shower.png";
     case "Drizzle":
@@ -27,4 +27,27 @@ export const imageChecker = (weather: string) => {
     default:
       return "/fog.png";
   }
+};
+
+export const degToCompass = (deg: number) => {
+  const n = Math.round(deg / 22.5 + 0.5);
+  const cardinalPointsArray = [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+  ];
+  return cardinalPointsArray[n];
 };

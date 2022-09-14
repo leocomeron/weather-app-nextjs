@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import useSWR from "swr";
 import Head from "next/head";
 
-import { imageChecker, transformToCelcius } from "../helpers";
+import { degToCompass, imageChecker, transformToCelcius } from "../helpers";
 import styles from "../styles/Home.module.css";
 import { Grid, Typography, Drawer } from "@mui/material";
 
@@ -77,7 +77,10 @@ const Home: NextPage = () => {
           </Typography>
           <Grid container spacing={2}>
             <Grid item md={6} xs={12}>
-              <WindCard value={Math.round(data.wind.speed)} />
+              <WindCard
+                value={Math.round(data.wind.speed)}
+                windDirection={data.wind.deg}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
               <HumidityCard value={data.main.humidity} />
