@@ -1,6 +1,13 @@
 import { Typography, Grid, styled } from "@mui/material";
 import WeatherImage from "./WeatherImage";
 
+export interface DailyWeatherPropsType {
+  day: string;
+  weather: string;
+  minTemp: number;
+  maxTemp: number;
+}
+
 const StyledContainer = styled(Grid)({
   backgroundColor: "#1E213A",
   maxWidth: 120,
@@ -12,16 +19,16 @@ const StyledTypographyContainer = styled(Grid)({
   paddingTop: "31px",
 });
 
-const DailyWeather = () => {
+const DailyWeather = (props: DailyWeatherPropsType) => {
   return (
     <StyledContainer>
       <Typography textAlign="center" paddingBottom="10px">
-        Tomorrow
+        {props.day}
       </Typography>
-      <WeatherImage src="/Shower.png" width={56} height={62} />
+      <WeatherImage src={props.weather} width={56} height={62} />
       <StyledTypographyContainer container>
-        <Typography>16˚C</Typography>
-        <Typography>11˚C</Typography>
+        <Typography>{props.maxTemp}°C</Typography>
+        <Typography>{props.minTemp}°C</Typography>
       </StyledTypographyContainer>
     </StyledContainer>
   );

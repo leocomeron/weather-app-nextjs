@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import useSWR from "swr";
 import Head from "next/head";
 
-import { degToCompass, imageChecker, transformToCelcius } from "../helpers";
+import { imageChecker, transformToCelcius } from "../helpers";
 import styles from "../styles/Home.module.css";
 import { Grid, Typography, Drawer } from "@mui/material";
 
@@ -19,6 +19,7 @@ import WindCard from "../components/WindCard";
 import HumidityCard from "../components/HumidityCard";
 import VisibilityCard from "../components/VisibilityCard";
 import AirPressureCard from "../components/AirPressureCard";
+import useFetchForecast from "../hooks/useFetchForecast";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -37,9 +38,11 @@ const url =
 const Home: NextPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { data, error } = useSWR(url, fetcher);
-  console.log(data);
+  const { dataForecast, isErrorForecast, isLoadingForecast } =
+    useFetchForecast();
+  console.log(dataForecast);
 
-  if (!data) return <div>loading...</div>;
+  if (!data || !dataForecast) return <div>loading...</div>;
 
   return (
     <div className={styles.container}>
@@ -65,11 +68,19 @@ const Home: NextPage = () => {
         <Drawer open={isDrawerOpen}>dddd</Drawer>
         <Grid item xs={8} paddingLeft={4}>
           <Grid container spacing={3}>
-            {[0, 1, 2, 3, 4].map((a) => (
-              <Grid item key={a}>
-                <DailyWeather />
-              </Grid>
-            ))}
+            {dataForecast.list.map(
+              (a: any, i: number) =>
+                i % 8 === 0 && (
+                  <Grid item key={i}>
+                    <DailyWeather
+                      day={a.dt_txt}
+                      weather={imageChecker(a.weather[0].main)}
+                      minTemp={Math.round(a.main.temp_min - 273.15)}
+                      maxTemp={Math.round(a.main.temp_max - 273.15)}
+                    />
+                  </Grid>
+                )
+            )}
           </Grid>
 
           <Typography fontSize={24} fontWeight={700}>
