@@ -5,14 +5,13 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const lat = -31.42;
 const lon = -64.18;
-const forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+const forecastUrl = "https://api.open-meteo.com/v1/forecast?";
 const url =
   forecastUrl +
-  `lat=${lat}` +
+  `latitude=${lat}` +
   "&" +
-  `lon=${lon}` +
-  "&" +
-  `appid=0ad247dac36d0f01e5015097858df85e`;
+  `longitude=${lon}` +
+  "&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=America%2FSao_Paulo";
 
 const useFetchForecast = () => {
   const { data, error } = useSWR(url, fetcher);

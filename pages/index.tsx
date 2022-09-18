@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import useSWR from "swr";
 import Head from "next/head";
 
-import { imageChecker, transformToCelcius } from "../helpers";
+import { imageChecker, transformToCelcius, dayOfTheWeek } from "../helpers";
 import styles from "../styles/Home.module.css";
 import { Grid, Typography, Drawer } from "@mui/material";
 
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Grid container overflow="auto" height="100vh">
-        <Grid item xs={4} sx={{ background: "#1E213A" }}>
+        <Grid item xs={12} md={4} sx={{ background: "#1E213A" }}>
           <SearchButton />
           <LocationIcon />
           <WeatherImage
@@ -66,17 +66,22 @@ const Home: NextPage = () => {
           <IconWithText city={data.name} />
         </Grid>
         <Drawer open={isDrawerOpen}>dddd</Drawer>
-        <Grid item xs={8} paddingLeft={4}>
+        <Grid item xs={12} md={8} paddingLeft={4}>
           <Grid container spacing={3}>
-            {dataForecast.list.map(
-              (a: any, i: number) =>
-                i % 8 === 0 && (
+            {dataForecast.daily.time.map(
+              (date: string, i: number) =>
+                i > 0 &&
+                i < 6 && (
                   <Grid item key={i}>
                     <DailyWeather
-                      day={a.dt_txt}
-                      weather={imageChecker(a.weather[0].main)}
-                      minTemp={Math.round(a.main.temp_min - 273.15)}
-                      maxTemp={Math.round(a.main.temp_max - 273.15)}
+                      day={i === 1 ? "Tomorrow" : dayOfTheWeek(date)}
+                      weather={imageChecker(dataForecast.daily.weathercode[i])}
+                      minTemp={Math.round(
+                        dataForecast.daily.temperature_2m_min[i]
+                      )}
+                      maxTemp={Math.round(
+                        dataForecast.daily.temperature_2m_max[i]
+                      )}
                     />
                   </Grid>
                 )

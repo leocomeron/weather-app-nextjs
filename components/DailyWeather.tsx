@@ -10,7 +10,7 @@ export interface DailyWeatherPropsType {
 
 const StyledContainer = styled(Grid)({
   backgroundColor: "#1E213A",
-  maxWidth: 120,
+  minWidth: 120,
   padding: 18,
 });
 
