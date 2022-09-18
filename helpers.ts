@@ -79,3 +79,5 @@ export const dayOfTheWeek = (dt_txt: string) => {
   const dayString = date.toLocaleDateString("en-US", { weekday: "long" });
   return dayString;
 };
+
+//test
